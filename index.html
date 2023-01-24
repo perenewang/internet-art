@@ -12,8 +12,6 @@
             <button id="inflate" type="button" onclick="blow()">Click Me!</button>
             <img id="balloon" src="media/balloon.jpeg" alt="balloon" width="95" height="100">
         </div>
-        
-
     </body>
 
     <script>
@@ -44,6 +42,7 @@
             }
         }
 
+        // waits the specified amount of time (in ms) before executing next line
         const delay = ms => new Promise(res => setTimeout(res, ms));
 
         const art = async () => {
@@ -52,8 +51,7 @@
             balloon.parentNode.removeChild(balloon);
             
         }
-
-
+        
     </script>
 
 </html>
