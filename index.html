@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="styles.css">
+        <title>internet art</title>
+    </head>
+
+    <body>
+        <div class="centered">
+            <button id="inflate" type="button" onclick="blow()">Click Me!</button>
+            <img id="balloon" src="media/balloon.jpeg" alt="balloon" width="95" height="100">
+        </div>
+        
+
+    </body>
+
+    <script>
+
+        function getRandomInt(max) {
+            //non inclusive
+            return Math.floor(Math.random() * max);
+        }
+
+        let pop = getRandomInt(10) + 1; // don't want 0
+        console.log(pop)
+        let count = 1;
+
+        function blow() {
+            let balloon = document.getElementById("balloon");
+            if (count < pop) {
+                balloon.height += 20;
+                balloon.width += 20;
+                count++;
+            }
+            else {
+                let inflate = document.getElementById("inflate");
+                inflate.parentNode.removeChild(inflate);
+                balloon.src = "media/pop.gif";
+                balloon.height += 300;
+                balloon.width += 300;
+                art()
+            }
+        }
+
+        const delay = ms => new Promise(res => setTimeout(res, ms));
+
+        const art = async () => {
+            await delay(2000);
+            let balloon = document.getElementById("balloon");
+            balloon.parentNode.removeChild(balloon);
+            
+        }
+
+
+    </script>
+
+</html>
