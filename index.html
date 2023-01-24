@@ -10,7 +10,7 @@
     <body>
         <div class="centered">
             <button id="inflate" type="button" onclick="blow()">Click Me!</button>
-            <img id="balloon" src="media/balloon.jpeg" alt="balloon" width="95" height="100">
+            <img id="balloon" src="media/balloon.png" alt="balloon" width="95" height="100">
         </div>
     </body>
 
@@ -49,9 +49,10 @@
             await delay(2000);
             let balloon = document.getElementById("balloon");
             balloon.parentNode.removeChild(balloon);
-            
+            // restart
+            location.reload()
         }
-        
+
     </script>
 
 </html>
