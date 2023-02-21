@@ -1,5 +1,5 @@
 .centered {
-    margin-top: 10%;
+    margin-top: 5%;
     justify-content: center;
     align-items: center;
 }
@@ -10,11 +10,50 @@ img {
     margin-right: auto;
 }
 
+#info {
+    background-color: blueviolet;
+    color: white;
+    /* light pink */
+    border-radius: 50px;
+    /* make it round */
+    padding: 12px 35px;
+    /* add some padding */
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5);
+    /* add some depth with a shadow */
+    display: inline-block;
+    /* make it an inline block so it wraps around the content */
+    font-family: "Monaco";
+    font-size: 16px;
+    margin-left: 25px;
+    margin-top: 20px;
+}
+
+#cash {
+    background-color: #4CAF50;
+    display: block;
+    /* green */
+    border: none;
+    color: white;
+    padding: 8px 20px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 14px;
+    font-family: "Monaco";
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 40px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+#cash:active {
+    background-color: darkgreen;
+}
+
 #inflate {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     width: 100px;
     height: 25px;
     border: none;

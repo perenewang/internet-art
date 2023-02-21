@@ -8,50 +8,89 @@
     </head>
 
     <body>
+        <div id="info">
+            <h3 id="round">Round: 1 / 10</h3>
+            <h3 id="total">Total: $0.00</h3>
+            <p id="money">Add: $0.00</p>
+        </div>
+        
         <div class="centered">
-            <button id="inflate" type="button" onclick="blow()">Click Me!</button>
+            <button id="cash" type="button" onclick="updateRound(false)">Cash In</button>
+            <button id="inflate" type="button" onclick="blow()">Inflate</button>
             <img id="balloon" src="media/balloon.png" alt="balloon" width="95" height="100">
         </div>
     </body>
 
     <script>
 
+        let r = document.getElementById("round");
+        let t = document.getElementById("total");
+        let m = document.getElementById("money");
+        let balloon = document.getElementById("balloon");
+        let inflate = document.getElementById("inflate");
+        let cash = document.getElementById("cash");
+        let d = document.getElementById("centered");
+
+        let round = 1;
+        let total = 0.00;
+        let money = 0.00;
+
         function getRandomInt(max) {
             //non inclusive
             return Math.floor(Math.random() * max);
         }
 
-        let pop = getRandomInt(10) + 1; // don't want 0
+        let pop = getRandomInt(10) + 2; // don't want 0
         console.log(pop)
         let count = 1;
 
-        function blow() {
-            let balloon = document.getElementById("balloon");
-            if (count < pop) {
-                balloon.height += 20;
-                balloon.width += 20;
-                count++;
+        function updateRound(popped) {
+            if (!popped) {
+                total += money;
             }
-            else {
-                let inflate = document.getElementById("inflate");
-                inflate.parentNode.removeChild(inflate);
-                balloon.src = "media/pop.gif";
-                balloon.height += 300;
-                balloon.width += 300;
-                art()
-            }
+            money = 0.00;
+            round++;
+            r.innerText = "Round: " + round + " / 10";
+            t.innerText = "Total: $" + total.toFixed(2);
+            m.innerText = "Add: $" + money.toFixed(2);
+
+            balloon.src = "media/balloon.png"
+            balloon.height = 100;
+            balloon.width = 95;
+            inflate.style.display = "block";
+            cash.style.display = "block";
+
+            pop = getRandomInt(10) + 1; // don't want 0
+            console.log(pop);
+            count = 1;
+            
         }
 
         // waits the specified amount of time (in ms) before executing next line
         const delay = ms => new Promise(res => setTimeout(res, ms));
 
-        const art = async () => {
-            await delay(2000);
-            let balloon = document.getElementById("balloon");
-            balloon.parentNode.removeChild(balloon);
-            // restart
-            location.reload()
+    
+        const blow = async () => {
+            console.log(count);
+            if (count < pop) {
+                balloon.height += 20;
+                balloon.width += 20;
+                money += 0.50;
+                m.innerText = "Add: $" + money.toFixed(2);
+                count++;
+            }
+            else {
+                // inflate.parentNode.removeChild(inflate);
+                inflate.style.display = "none";
+                cash.style.display = "none";
+                balloon.src = "media/pop.gif";
+                balloon.height += 300;
+                balloon.width += 300;
+                await delay(1000);
+                updateRound(true);
+            }
         }
+
 
     </script>
 
