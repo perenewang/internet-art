@@ -45,6 +45,11 @@
         let count = 1;
 
         function updateRound(popped) {
+            if (round === 10) {
+                finish();
+                return;
+            }
+
             if (!popped) {
                 total += money;
             }
@@ -89,6 +94,12 @@
                 await delay(1000);
                 updateRound(true);
             }
+        }
+
+        function finish() {
+            // TODO: what to do when they finish?
+            alert("you got $" + total.toFixed(2)); 
+            location.reload();
         }
 
 
