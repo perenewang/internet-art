@@ -7,7 +7,15 @@
         <title>internet art</title>
     </head>
 
+    <!-- 
+        ideas for piece 3:
+        - depending on how many pops (in total or in a row?), give risk aversity?
+        - add instructions popup
+    
+    -->
+
     <body>
+        <div id="overlay"></div>
         <div id="info">
             <h3 id="round">Round: 1 / 10</h3>
             <h3 id="total">Total: $0.00</h3>
@@ -17,8 +25,13 @@
         <div class="centered">
             <button id="cash" type="button" onclick="updateRound(false)">Cash In</button>
             <button id="inflate" type="button" onclick="blow()">Inflate</button>
-            <img id="balloon" src="media/balloon.png" alt="balloon" width="95" height="100">
+            <img id="balloon" src="media/balloon.png" alt="balloon" width="115" height="120">
         </div>
+        <div id="myPopup">
+            <p id="finish">YOU WIN</p>
+            <button id="close" type="button" onclick="location.reload()">Play Again</button>
+        </div>
+
     </body>
 
     <script>
@@ -60,8 +73,8 @@
             m.innerText = "Add: $" + money.toFixed(2);
 
             balloon.src = "media/balloon.png"
-            balloon.height = 100;
-            balloon.width = 95;
+            balloon.height = 120;
+            balloon.width = 115;
             inflate.style.display = "block";
             cash.style.display = "block";
 
@@ -97,9 +110,13 @@
         }
 
         function finish() {
-            // TODO: what to do when they finish?
-            alert("you got $" + total.toFixed(2)); 
-            location.reload();
+            // TODO: make it popup not alert
+            const popup = document.getElementById("myPopup");
+            const finish = document.getElementById("finish");
+            const overlay = document.getElementById("overlay");
+            finish.innerText = "YOU GOT $" + total.toFixed(2);
+            popup.style.display = "block";
+            overlay.style.display = "block";
         }
 
 
