@@ -7,12 +7,6 @@
         <title>internet art</title>
     </head>
 
-    <!-- 
-        ideas for piece 3:
-        - depending on how many pops (in total or in a row?), give risk aversity?
-        - add instructions popup
-    
-    -->
 
     <body>
         <div id="overlay"></div>
@@ -27,14 +21,47 @@
             <button id="inflate" type="button" onclick="blow()">Inflate</button>
             <img id="balloon" src="media/balloon.png" alt="balloon" width="115" height="120">
         </div>
-        <div id="myPopup">
+        <div id="winPopup">
             <p id="finish">YOU WIN</p>
+            <label for="user">Username:</label><br>
+            <input type="text" id="user" name="user"><br>
+            <button id="submit" onclick="addToLeaderboard()">Submit</button>
+        </div>
+        <div id="leaderboard">
+            <h3>LEADERBOARD</h3>
+            <table id="scores"></table>
             <button id="close" type="button" onclick="location.reload()">Play Again</button>
         </div>
 
     </body>
 
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.8.0/firebase-app.js"></script>
+    
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/8.8.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.0/firebase-database.js"></script>
+
+
     <script>
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDoud8Rz3VWEpQvlx5EshCQbdn_IZ2yNhg",
+            authDomain: "internet-art.firebaseapp.com",
+            projectId: "internet-art",
+            storageBucket: "internet-art.appspot.com",
+            messagingSenderId: "867964521514",
+            appId: "1:867964521514:web:1f07c0a06013cd03068753",
+            measurementId: "G-PLWP0CN8D6",
+            databaseURL: "https://internet-art-default-rtdb.firebaseio.com",
+        };
+
+        // Initialize Firebase
+        
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
 
         let r = document.getElementById("round");
         let t = document.getElementById("total");
@@ -42,7 +69,11 @@
         let balloon = document.getElementById("balloon");
         let inflate = document.getElementById("inflate");
         let cash = document.getElementById("cash");
-        let d = document.getElementById("centered");
+        const winPopup = document.getElementById("winPopup");
+        const finish = document.getElementById("finish");
+        const overlay = document.getElementById("overlay");
+        const leaderboard = document.getElementById("leaderboard");
+        const scores = document.getElementById("scores");
 
         let round = 1;
         let total = 0.00;
@@ -59,7 +90,7 @@
 
         function updateRound(popped) {
             if (round === 10) {
-                finish();
+                done();
                 return;
             }
 
@@ -98,7 +129,6 @@
                 count++;
             }
             else {
-                // inflate.parentNode.removeChild(inflate);
                 inflate.style.display = "none";
                 cash.style.display = "none";
                 balloon.src = "media/pop.gif";
@@ -109,14 +139,48 @@
             }
         }
 
-        function finish() {
-            // TODO: make it popup not alert
-            const popup = document.getElementById("myPopup");
-            const finish = document.getElementById("finish");
-            const overlay = document.getElementById("overlay");
+        function done() {
             finish.innerText = "YOU GOT $" + total.toFixed(2);
-            popup.style.display = "block";
+            winPopup.style.display = "block";
             overlay.style.display = "block";
+        }
+
+        async function addToLeaderboard() {
+            const username = document.getElementById("user").value;
+            const res = await db.ref("leaderboard/" + username).set({
+                user: username,
+                score: total
+            });
+
+            displayLeaderboard();
+        }
+
+        function displayLeaderboard() {
+
+            const leaderBoardRef = db.ref('leaderboard');
+            leaderBoardRef.orderByChild('score').limitToLast(10).on('value', (snapshot) => {
+                // clear the existing leaderboard table
+                const tableBody = document.getElementById('scores');
+                tableBody.innerHTML = '';
+
+                // iterate through the leaderboard data and add rows to the table
+                let rows = [];
+                snapshot.forEach((childSnapshot) => {
+                    const childData = childSnapshot.val();
+                    const row = `<tr>
+                        <td>${childData.user}</td>
+                        <td>$${childData.score.toFixed(2)}</td>
+                        </tr>`;
+                    rows.push(row)
+                });
+
+                // reverse to be descending order
+                rows.reverse().forEach((row) => tableBody.insertAdjacentHTML('beforeend', row));
+
+            });
+
+            winPopup.style.display = "none";
+            leaderboard.style.display = "block";
         }
 
 
